@@ -3,138 +3,158 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>LEBRON VAULT • Unblocked Games 2026</title>
+  <title>LEBRON VAULT • Cosmic Unblocked 2026</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
-    body { font-family: 'Segoe UI', system-ui, sans-serif; }
-    .neon-text { text-shadow: 0 0 10px #22ff88, 0 0 20px #22ff88; }
-    .game-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-    .game-card:hover { transform: translateY(-8px) scale(1.03); box-shadow: 0 0 30px rgba(34, 255, 136, 0.6); }
-    .modal { animation: fadeIn 0.3s ease; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    iframe { border-radius: 12px; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background-image: url('https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif');  /* Animated dark starfield/nebula GIF – looping cosmic stars with motion */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;  /* Keeps it fixed while scrolling */
+      min-height: 100vh;
+      color: white;
+    }
+    .content-bg {
+      background: rgba(0, 0, 0, 0.65);  /* Semi-transparent dark overlay for readability */
+      backdrop-filter: blur(8px);       /* Glassmorphism blur effect */
+    }
+    .neon-text {
+      text-shadow: 0 0 15px #22ff88, 0 0 30px #22ff88, 0 0 45px #22ff88;
+    }
+    .game-card {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+    .game-card:hover {
+      transform: translateY(-12px) rotateX(5deg) rotateY(5deg) scale(1.05);
+      box-shadow: 0 0 40px rgba(34, 255, 136, 0.7), 0 20px 40px rgba(0,0,0,0.6);
+    }
+    .modal {
+      animation: fadeIn 0.4s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    iframe {
+      border-radius: 16px;
+      box-shadow: 0 0 30px rgba(34, 255, 136, 0.4);
+    }
   </style>
 </head>
-<body class="bg-zinc-950 text-white">
+<body>
 
-  <!-- HEADER -->
-  <header class="border-b border-zinc-800 bg-black/80 backdrop-blur-md sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center text-2xl font-bold">L</div>
-        <h1 class="text-3xl font-black tracking-tighter neon-text text-emerald-400">LEBRON VAULT</h1>
+  <!-- MAIN CONTAINER WITH OVERLAY -->
+  <div class="content-bg min-h-screen">
+
+    <!-- HEADER -->
+    <header class="border-b border-emerald-900/50 bg-black/60 backdrop-blur-lg sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center text-2xl font-bold shadow-lg shadow-emerald-500/50">L</div>
+          <h1 class="text-3xl font-black tracking-tighter neon-text text-emerald-400">LEBRON VAULT</h1>
+        </div>
+        
+        <div class="flex-1 max-w-xl mx-8">
+          <div class="relative">
+            <input id="searchInput" 
+                   type="text" 
+                   placeholder="Search games... (1v1, minecraft, moto, fnaf...)"
+                   class="w-full bg-black/70 border border-emerald-700/50 rounded-2xl py-3 px-5 text-lg focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/30 placeholder-zinc-400"/>
+            <i class="fas fa-search absolute right-5 top-3.5 text-emerald-400/70"></i>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-6 text-xl">
+          <button onclick="randomGame()" class="flex items-center gap-2 hover:text-emerald-300 transition">
+            <i class="fas fa-dice-five"></i> <span class="hidden md:inline">Random</span>
+          </button>
+          <a href="#" class="hover:text-emerald-300 transition"><i class="fas fa-cog"></i></a>
+        </div>
       </div>
-      
-      <div class="flex-1 max-w-xl mx-8">
-        <div class="relative">
-          <input id="searchInput" 
-                 type="text" 
-                 placeholder="Search games... (1v1, minecraft, fnaf, etc.)"
-                 class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl py-3 px-5 text-lg focus:outline-none focus:border-emerald-500 placeholder-zinc-500"/>
-          <i class="fas fa-search absolute right-5 top-3.5 text-zinc-500"></i>
+    </header>
+
+    <div class="max-w-7xl mx-auto flex gap-8 px-6 py-8">
+
+      <!-- SIDEBAR -->
+      <div class="w-64 hidden lg:block">
+        <div class="sticky top-24">
+          <h2 class="text-emerald-400 font-bold text-xl mb-4 flex items-center gap-2"><i class="fas fa-th-large"></i> CATEGORIES</h2>
+          <div id="categories" class="space-y-2 text-lg">
+            <button onclick="filterCategory('all')" class="cat-btn active w-full text-left px-5 py-3 rounded-2xl bg-black/50 hover:bg-emerald-500/20 border border-emerald-900/30 flex items-center gap-3 transition">All Games</button>
+            <button onclick="filterCategory('battle')" class="cat-btn w-full text-left px-5 py-3 rounded-2xl hover:bg-emerald-500/20 border border-emerald-900/30 flex items-center gap-3 transition">Battle / 1v1</button>
+            <button onclick="filterCategory('racing')" class="cat-btn w-full text-left px-5 py-3 rounded-2xl hover:bg-emerald-500/20 border border-emerald-900/30 flex items-center gap-3 transition">Racing</button>
+            <button onclick="filterCategory('horror')" class="cat-btn w-full text-left px-5 py-3 rounded-2xl hover:bg-emerald-500/20 border border-emerald-900/30 flex items-center gap-3 transition">Horror</button>
+            <button onclick="filterCategory('io')" class="cat-btn w-full text-left px-5 py-3 rounded-2xl hover:bg-emerald-500/20 border border-emerald-900/30 flex items-center gap-3 transition">.io Games</button>
+            <button onclick="filterCategory('sports')" class="cat-btn w-full text-left px-5 py-3 rounded-2xl hover:bg-emerald-500/20 border border-emerald-900/30 flex items-center gap-3 transition">Sports</button>
+          </div>
         </div>
       </div>
 
-      <div class="flex items-center gap-6 text-xl">
-        <button onclick="randomGame()" class="flex items-center gap-2 hover:text-emerald-400 transition">
-          <i class="fas fa-dice"></i> <span class="hidden md:inline">Random</span>
-        </button>
-        <a href="#" class="hover:text-emerald-400 transition"><i class="fas fa-cog"></i></a>
-      </div>
-    </div>
-  </header>
-
-  <div class="max-w-7xl mx-auto flex gap-8 px-6 py-8">
-
-    <!-- SIDEBAR CATEGORIES -->
-    <div class="w-64 hidden lg:block">
-      <div class="sticky top-24">
-        <h2 class="text-emerald-400 font-bold text-xl mb-4 flex items-center gap-2"><i class="fas fa-th"></i> CATEGORIES</h2>
-        <div id="categories" class="space-y-2 text-lg">
-          <button onclick="filterCategory('all')" class="cat-btn active w-full text-left px-5 py-3 rounded-2xl bg-zinc-900 hover:bg-emerald-500/20 flex items-center gap-3">All Games</button>
-          <button onclick="filterCategory('battle')" class="cat-btn w-full text-left px-5 py-3 rounded-2xl hover:bg-emerald-500/20 flex items-center gap-3">Battle / 1v1</button>
-          <button onclick="filterCategory('racing')" class="cat-btn w-full text-left px-5 py-3 rounded-2xl hover:bg-emerald-500/20 flex items-center gap-3">Racing</button>
-          <button onclick="filterCategory('horror')" class="cat-btn w-full text-left px-5 py-3 rounded-2xl hover:bg-emerald-500/20 flex items-center gap-3">Horror</button>
-          <button onclick="filterCategory('io')" class="cat-btn w-full text-left px-5 py-3 rounded-2xl hover:bg-emerald-500/20 flex items-center gap-3">.io Games</button>
-          <button onclick="filterCategory('sports')" class="cat-btn w-full text-left px-5 py-3 rounded-2xl hover:bg-emerald-500/20 flex items-center gap-3">Sports</button>
+      <!-- GAME GRID -->
+      <div class="flex-1">
+        <div id="gameGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <!-- JS populates here -->
         </div>
       </div>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <div class="flex-1">
-      <div id="gameGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <!-- Games populated by JS below -->
+    <!-- MODAL -->
+    <div id="gameModal" class="hidden fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4">
+      <div class="modal bg-black/80 backdrop-blur-xl rounded-3xl max-w-6xl w-full max-h-[95vh] overflow-hidden border border-emerald-500/30 shadow-2xl shadow-emerald-900/50">
+        <div class="flex justify-between items-center px-6 py-4 border-b border-emerald-900/50">
+          <h2 id="modalTitle" class="text-2xl font-bold neon-text"></h2>
+          <button onclick="closeModal()" class="text-3xl hover:text-red-400 transition">×</button>
+        </div>
+        <div class="p-4">
+          <iframe id="modalIframe" class="w-full aspect-video bg-black/90" allowfullscreen></iframe>
+        </div>
+        <div class="px-6 py-4 flex justify-end gap-4 border-t border-emerald-900/50">
+          <button onclick="closeModal()" class="px-8 py-3 bg-zinc-900 hover:bg-zinc-800 rounded-2xl transition">Close</button>
+          <button onclick="toggleFullscreen()" class="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-black font-bold rounded-2xl flex items-center gap-2 transition">
+            <i class="fas fa-expand"></i> Fullscreen
+          </button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- GAME MODAL -->
-  <div id="gameModal" class="hidden fixed inset-0 bg-black/95 z-[100] flex items-center justify-center p-4">
-    <div class="modal bg-zinc-900 rounded-3xl max-w-6xl w-full max-h-[95vh] overflow-hidden border border-emerald-500/30">
-      <div class="flex justify-between items-center px-6 py-4 border-b border-zinc-700">
-        <h2 id="modalTitle" class="text-2xl font-bold"></h2>
-        <button onclick="closeModal()" class="text-3xl hover:text-red-400">×</button>
-      </div>
-      <div class="p-4">
-        <iframe id="modalIframe" class="w-full aspect-video bg-black" allowfullscreen></iframe>
-      </div>
-      <div class="px-6 py-4 flex justify-end gap-4 border-t border-zinc-700">
-        <button onclick="closeModal()" class="px-8 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-2xl">Close</button>
-        <button onclick="toggleFullscreen()" class="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-black font-bold rounded-2xl flex items-center gap-2">
-          <i class="fas fa-expand"></i> Fullscreen
-        </button>
-      </div>
-    </div>
   </div>
 
   <script>
-    // Tailwind script already loaded
-
     const games = [
-      { title: "1v1.lol", url: "https://sites.google.com/view/classroom6x/1v1-lol", cat: "battle" },
-      { title: "Moto X3M", url: "https://sites.google.com/view/classroom6x/moto-x3m", cat: "racing" },
-      { title: "Minecraft Eaglercraft", url: "https://sites.google.com/view/html5gamesunblocked/eaglercraft", cat: "battle" },
+      { title: "1v1.lol", url: "https://sites.google.com/view/html5gamesunblocked/1v1-lol", cat: "battle" },
+      { title: "Minecraft Eaglercraft", url: "https://eaglercraft.com/", cat: "battle" },
+      { title: "Moto X3M", url: "https://sites.google.com/view/html5gamesunblocked/moto-x3m", cat: "racing" },
+      { title: "Five Nights at Epstein's", url: "https://slithergame.io/five-nights-at-epsteins", cat: "horror" },
       { title: "Retro Bowl", url: "https://retro-bowl-unbl0cked.github.io/", cat: "sports" },
       { title: "Monkey Mart", url: "https://monkeymart-online.github.io/", cat: "io" },
       { title: "Slope", url: "https://slope-game.github.io/", cat: "io" },
-      { title: "Five Nights at Epstein's", url: "https://slithergame.io/five-nights-at-epsteins", cat: "horror" },
       { title: "Shell Shockers", url: "https://shellshock.io/", cat: "battle" },
       { title: "Krunker.io", url: "https://krunker.io/", cat: "battle" },
       { title: "Among Us Online", url: "https://www.crazygames.com/embed/among-us-online", cat: "io" },
-      { title: "Paper.io 2", url: "https://paperio2.io/", cat: "io" },
-      { title: "Run 3", url: "https://run3unblocked.github.io/", cat: "io" },
-      { title: "Geometry Dash Lite", url: "https://geometrydashlite.github.io/", cat: "io" },
-      { title: "Basket Random", url: "https://www.crazygames.com/embed/basket-random", cat: "sports" },
-      { title: "Idle Breakout", url: "https://www.crazygames.com/embed/idle-breakout", cat: "io" },
-      { title: "Tunnel Rush", url: "https://tunnel-rush.github.io/", cat: "io" },
-      { title: "Fireboy & Watergirl", url: "https://fireboyandwatergirl.github.io/", cat: "io" },
-      { title: "2048", url: "https://play2048.co/", cat: "io" },
-      { title: "Happy Wheels", url: "https://happywheelsunblocked.github.io/", cat: "io" },
-      { title: "Drift Hunters", url: "https://drifthunters.github.io/", cat: "racing" },
-      { title: "Subway Surfers", url: "https://subway-surfers.github.io/", cat: "io" },
-      { title: "Crossy Road", url: "https://www.crazygames.com/embed/crossy-road", cat: "io" },
-      // Add more if you want — just copy the format
+      // ... add more as needed
     ];
 
     function renderGames(filteredGames) {
       const grid = document.getElementById('gameGrid');
       grid.innerHTML = '';
-      
       filteredGames.forEach(game => {
         const card = document.createElement('div');
-        card.className = `game-card bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-800 cursor-pointer`;
+        card.className = `game-card bg-black/40 backdrop-blur-md rounded-3xl overflow-hidden border border-emerald-900/40 cursor-pointer`;
         card.innerHTML = `
-          <div class="h-48 bg-zinc-800 flex items-center justify-center relative">
-            <div class="text-6xl opacity-20">${game.title.split(' ')[0][0]}</div>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-            <div class="absolute bottom-3 left-3 bg-black/70 text-xs px-3 py-1 rounded-full">${game.cat.toUpperCase()}</div>
+          <div class="h-48 bg-black/60 flex items-center justify-center relative">
+            <div class="text-7xl opacity-10">${game.title[0]}</div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+            <div class="absolute bottom-3 left-3 bg-black/70 text-xs px-3 py-1 rounded-full text-emerald-300">${game.cat.toUpperCase()}</div>
           </div>
           <div class="p-5">
-            <h3 class="font-bold text-xl mb-1">${game.title}</h3>
+            <h3 class="font-bold text-xl mb-1 neon-text">${game.title}</h3>
             <button onclick="openGame('${game.title}', '${game.url}'); event.stopImmediatePropagation();" 
-                    class="mt-4 w-full bg-emerald-500 hover:bg-emerald-600 text-black font-bold py-3 rounded-2xl flex items-center justify-center gap-2">
+                    class="mt-4 w-full bg-emerald-600/80 hover:bg-emerald-500 text-black font-bold py-3 rounded-2xl flex items-center justify-center gap-2 transition backdrop-blur-sm">
               <i class="fas fa-play"></i> PLAY NOW
             </button>
           </div>
@@ -152,11 +172,9 @@
     }
 
     function closeModal() {
-      const modal = document.getElementById('gameModal');
-      const iframe = document.getElementById('modalIframe');
-      iframe.src = ''; // stop loading
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
+      document.getElementById('modalIframe').src = '';
+      document.getElementById('gameModal').classList.add('hidden');
+      document.getElementById('gameModal').classList.remove('flex');
     }
 
     function toggleFullscreen() {
@@ -165,8 +183,10 @@
     }
 
     function filterCategory(cat) {
-      document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active', 'bg-emerald-500/20'));
-      event.currentTarget.classList.add('active', 'bg-emerald-500/20');
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-emerald-500/30');
+      });
+      event.currentTarget.classList.add('active', 'bg-emerald-500/30');
 
       let filtered = games;
       if (cat !== 'all') filtered = games.filter(g => g.cat === cat);
@@ -178,25 +198,24 @@
       openGame(random.title, random.url);
     }
 
-    // Search
     document.getElementById('searchInput').addEventListener('input', (e) => {
       const term = e.target.value.toLowerCase();
       const filtered = games.filter(g => g.title.toLowerCase().includes(term));
       renderGames(filtered);
     });
 
-    // Initial render
+    // Initial render + active class on "All Games"
+    document.querySelector('.cat-btn').classList.add('active', 'bg-emerald-500/30');
     renderGames(games);
 
-    // Close modal with ESC
     document.addEventListener('keydown', (e) => {
       if (e.key === "Escape") closeModal();
     });
   </script>
 
-  <p class="text-center text-zinc-500 text-sm mt-12 pb-8">
-    Lebron's Vault — Built for school • Google Sites + best mirrors • 2026 edition<br>
-    If a game doesn't load, right-click → Open in new tab or tell me and I'll swap the mirror instantly 😈
+  <p class="text-center text-emerald-300/70 text-sm mt-12 pb-8">
+    Lebron's Cosmic Vault • Powered by stars & sneaky mirrors • 2026 edition 😈🪐
   </p>
+
 </body>
 </html>
