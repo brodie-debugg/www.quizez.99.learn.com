@@ -9,213 +9,448 @@
   <style>
     body {
       font-family: 'Segoe UI', system-ui, sans-serif;
-      background-image: url('https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif');  /* Animated dark starfield/nebula GIF – looping cosmic stars with motion */
+      background-image: url('https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      background-attachment: fixed;  /* Keeps it fixed while scrolling */
+      background-attachment: fixed;
       min-height: 100vh;
       color: white;
     }
     .content-bg {
-      background: rgba(0, 0, 0, 0.65);  /* Semi-transparent dark overlay for readability */
-      backdrop-filter: blur(8px);       /* Glassmorphism blur effect */
+      background: rgba(0, 0, 0, 0.68);
+      backdrop-filter: blur(12px);
     }
-    .neon-text {
-      text-shadow: 0 0 15px #22ff88, 0 0 30px #22ff88, 0 0 45px #22ff88;
-    }
+    .neon-text { text-shadow: 0 0 15px #22ff88, 0 0 30px #22ff88, 0 0 50px #22ff88; }
     .game-card {
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       transform-style: preserve-3d;
-      perspective: 1000px;
     }
     .game-card:hover {
-      transform: translateY(-12px) rotateX(5deg) rotateY(5deg) scale(1.05);
-      box-shadow: 0 0 40px rgba(34, 255, 136, 0.7), 0 20px 40px rgba(0,0,0,0.6);
+      transform: translateY(-15px) rotateX(8deg) rotateY(8deg) scale(1.06);
+      box-shadow: 0 0 50px rgba(34, 255, 136, 0.8);
     }
-    .modal {
-      animation: fadeIn 0.4s ease;
+    .nav-link { transition: all 0.3s; }
+    .nav-link.active { color: #22ff88; border-bottom: 3px solid #22ff88; }
+    .modal { animation: modalPop 0.4s ease; }
+    @keyframes modalPop { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+    .proxy-card { 
+      background: rgba(0,0,0,0.5); 
+      border: 1px solid #22ff88/30; 
+      transition: all 0.3s; 
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    iframe {
-      border-radius: 16px;
-      box-shadow: 0 0 30px rgba(34, 255, 136, 0.4);
+    .proxy-card:hover { 
+      border-color: #22ff88; 
+      transform: translateY(-5px); 
+      box-shadow: 0 0 25px rgba(34,255,136,0.4); 
     }
   </style>
 </head>
 <body>
 
-  <!-- MAIN CONTAINER WITH OVERLAY -->
-  <div class="content-bg min-h-screen">
+<div class="content-bg min-h-screen">
 
-    <!-- HEADER -->
-    <header class="border-b border-emerald-900/50 bg-black/60 backdrop-blur-lg sticky top-0 z-50">
-      <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center text-2xl font-bold shadow-lg shadow-emerald-500/50">L</div>
-          <h1 class="text-3xl font-black tracking-tighter neon-text text-emerald-400">LEBRON VAULT</h1>
-        </div>
-        
-        <div class="flex-1 max-w-xl mx-8">
-          <div class="relative">
-            <input id="searchInput" 
-                   type="text" 
-                   placeholder="Search games... (1v1, minecraft, moto, fnaf...)"
-                   class="w-full bg-black/70 border border-emerald-700/50 rounded-2xl py-3 px-5 text-lg focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/30 placeholder-zinc-400"/>
-            <i class="fas fa-search absolute right-5 top-3.5 text-emerald-400/70"></i>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-6 text-xl">
-          <button onclick="randomGame()" class="flex items-center gap-2 hover:text-emerald-300 transition">
-            <i class="fas fa-dice-five"></i> <span class="hidden md:inline">Random</span>
-          </button>
-          <a href="#" class="hover:text-emerald-300 transition"><i class="fas fa-cog"></i></a>
-        </div>
-      </div>
-    </header>
-
-    <div class="max-w-7xl mx-auto flex gap-8 px-6 py-8">
-
-      <!-- SIDEBAR -->
-      <div class="w-64 hidden lg:block">
-        <div class="sticky top-24">
-          <h2 class="text-emerald-400 font-bold text-xl mb-4 flex items-center gap-2"><i class="fas fa-th-large"></i> CATEGORIES</h2>
-          <div id="categories" class="space-y-2 text-lg">
-            <button onclick="filterCategory('all')" class="cat-btn active w-full text-left px-5 py-3 rounded-2xl bg-black/50 hover:bg-emerald-500/20 border border-emerald-900/30 flex items-center gap-3 transition">All Games</button>
-            <button onclick="filterCategory('battle')" class="cat-btn w-full text-left px-5 py-3 rounded-2xl hover:bg-emerald-500/20 border border-emerald-900/30 flex items-center gap-3 transition">Battle / 1v1</button>
-            <button onclick="filterCategory('racing')" class="cat-btn w-full text-left px-5 py-3 rounded-2xl hover:bg-emerald-500/20 border border-emerald-900/30 flex items-center gap-3 transition">Racing</button>
-            <button onclick="filterCategory('horror')" class="cat-btn w-full text-left px-5 py-3 rounded-2xl hover:bg-emerald-500/20 border border-emerald-900/30 flex items-center gap-3 transition">Horror</button>
-            <button onclick="filterCategory('io')" class="cat-btn w-full text-left px-5 py-3 rounded-2xl hover:bg-emerald-500/20 border border-emerald-900/30 flex items-center gap-3 transition">.io Games</button>
-            <button onclick="filterCategory('sports')" class="cat-btn w-full text-left px-5 py-3 rounded-2xl hover:bg-emerald-500/20 border border-emerald-900/30 flex items-center gap-3 transition">Sports</button>
-          </div>
-        </div>
+  <!-- NAVBAR -->
+  <nav class="border-b border-emerald-900/50 bg-black/70 backdrop-blur-xl sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 bg-gradient-to-br from-emerald-400 to-cyan-400 rounded-2xl flex items-center justify-center text-3xl font-black shadow-xl">L</div>
+        <h1 class="text-4xl font-black tracking-tighter neon-text">LEBRON VAULT</h1>
       </div>
 
-      <!-- GAME GRID -->
-      <div class="flex-1">
-        <div id="gameGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          <!-- JS populates here -->
-        </div>
+      <div class="flex gap-8 text-lg font-medium">
+        <button onclick="showPage('home')" class="nav-link active px-5 py-2">HOME</button>
+        <button onclick="showPage('games')" class="nav-link px-5 py-2">GAMES</button>
+        <button onclick="showPage('proxies')" class="nav-link px-5 py-2">PROXIES</button>
+        <button onclick="showPage('sources')" class="nav-link px-5 py-2">SOURCES</button>
+      </div>
+
+      <button onclick="randomGame()" class="flex items-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-black font-bold px-6 py-3 rounded-2xl transition">
+        <i class="fas fa-dice-five"></i> RANDOM GAME
+      </button>
+    </div>
+  </nav>
+
+  <!-- HOME PAGE -->
+  <div id="home" class="page">
+    <div class="max-w-7xl mx-auto px-6 py-20 text-center">
+      <div class="inline-block px-8 py-3 bg-black/60 rounded-full text-emerald-300 text-sm tracking-widest mb-6">2026 • 100 GAMES • PROXIES • STEALTH MODE</div>
+      <h1 class="text-7xl font-black tracking-tighter neon-text mb-6">WELCOME TO THE VAULT</h1>
+      <p class="text-2xl text-emerald-200 max-w-2xl mx-auto">Cosmic unblocked games + free browser proxies. Built for school networks. No downloads needed.</p>
+      <div class="flex justify-center gap-6 mt-12">
+        <button onclick="showPage('games')" class="px-12 py-6 bg-gradient-to-r from-emerald-500 to-cyan-400 text-black font-black text-2xl rounded-3xl hover:scale-110 transition">ENTER GAMES</button>
+        <button onclick="showPage('proxies')" class="px-12 py-6 bg-gradient-to-r from-purple-600 to-indigo-500 text-white font-black text-2xl rounded-3xl hover:scale-110 transition">BYPASS TOOLS</button>
       </div>
     </div>
 
-    <!-- MODAL -->
-    <div id="gameModal" class="hidden fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4">
-      <div class="modal bg-black/80 backdrop-blur-xl rounded-3xl max-w-6xl w-full max-h-[95vh] overflow-hidden border border-emerald-500/30 shadow-2xl shadow-emerald-900/50">
-        <div class="flex justify-between items-center px-6 py-4 border-b border-emerald-900/50">
-          <h2 id="modalTitle" class="text-2xl font-bold neon-text"></h2>
-          <button onclick="closeModal()" class="text-3xl hover:text-red-400 transition">×</button>
-        </div>
-        <div class="p-4">
-          <iframe id="modalIframe" class="w-full aspect-video bg-black/90" allowfullscreen></iframe>
-        </div>
-        <div class="px-6 py-4 flex justify-end gap-4 border-t border-emerald-900/50">
-          <button onclick="closeModal()" class="px-8 py-3 bg-zinc-900 hover:bg-zinc-800 rounded-2xl transition">Close</button>
-          <button onclick="toggleFullscreen()" class="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-black font-bold rounded-2xl flex items-center gap-2 transition">
-            <i class="fas fa-expand"></i> Fullscreen
-          </button>
-        </div>
-      </div>
+    <div class="max-w-7xl mx-auto px-6 pb-20">
+      <h2 class="text-3xl font-bold mb-8 text-center">Featured Games</h2>
+      <div id="featuredGrid" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
     </div>
-
   </div>
 
-  <script>
-    const games = [
-      { title: "1v1.lol", url: "https://sites.google.com/view/html5gamesunblocked/1v1-lol", cat: "battle" },
-      { title: "Minecraft Eaglercraft", url: "https://eaglercraft.com/", cat: "battle" },
-      { title: "Moto X3M", url: "https://sites.google.com/view/html5gamesunblocked/moto-x3m", cat: "racing" },
-      { title: "Five Nights at Epstein's", url: "https://slithergame.io/five-nights-at-epsteins", cat: "horror" },
-      { title: "Retro Bowl", url: "https://retro-bowl-unbl0cked.github.io/", cat: "sports" },
-      { title: "Monkey Mart", url: "https://monkeymart-online.github.io/", cat: "io" },
-      { title: "Slope", url: "https://slope-game.github.io/", cat: "io" },
-      { title: "Shell Shockers", url: "https://shellshock.io/", cat: "battle" },
-      { title: "Krunker.io", url: "https://krunker.io/", cat: "battle" },
-      { title: "Among Us Online", url: "https://www.crazygames.com/embed/among-us-online", cat: "io" },
-      // ... add more as needed
-    ];
+  <!-- GAMES PAGE - 100 games -->
+  <div id="games" class="page hidden">
+    <div class="max-w-7xl mx-auto px-6 py-8">
+      <div class="flex flex-col md:flex-row gap-6 mb-10">
+        <input id="searchInput" type="text" placeholder="Search 100 games..." 
+               class="flex-1 bg-black/60 border border-emerald-700 rounded-3xl py-5 px-8 text-xl focus:outline-none focus:border-emerald-400"/>
+        <div class="flex gap-3 overflow-x-auto pb-2">
+          <button onclick="filterCategory('all')" class="cat-btn active whitespace-nowrap px-8 py-4 bg-black/60 rounded-3xl">ALL</button>
+          <button onclick="filterCategory('battle')" class="cat-btn whitespace-nowrap px-8 py-4 bg-black/60 rounded-3xl">BATTLE</button>
+          <button onclick="filterCategory('racing')" class="cat-btn whitespace-nowrap px-8 py-4 bg-black/60 rounded-3xl">RACING</button>
+          <button onclick="filterCategory('horror')" class="cat-btn whitespace-nowrap px-8 py-4 bg-black/60 rounded-3xl">HORROR</button>
+          <button onclick="filterCategory('io')" class="cat-btn whitespace-nowrap px-8 py-4 bg-black/60 rounded-3xl">.IO</button>
+          <button onclick="filterCategory('sports')" class="cat-btn whitespace-nowrap px-8 py-4 bg-black/60 rounded-3xl">SPORTS</button>
+        </div>
+      </div>
 
-    function renderGames(filteredGames) {
-      const grid = document.getElementById('gameGrid');
-      grid.innerHTML = '';
-      filteredGames.forEach(game => {
-        const card = document.createElement('div');
-        card.className = `game-card bg-black/40 backdrop-blur-md rounded-3xl overflow-hidden border border-emerald-900/40 cursor-pointer`;
-        card.innerHTML = `
-          <div class="h-48 bg-black/60 flex items-center justify-center relative">
-            <div class="text-7xl opacity-10">${game.title[0]}</div>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-            <div class="absolute bottom-3 left-3 bg-black/70 text-xs px-3 py-1 rounded-full text-emerald-300">${game.cat.toUpperCase()}</div>
-          </div>
-          <div class="p-5">
-            <h3 class="font-bold text-xl mb-1 neon-text">${game.title}</h3>
-            <button onclick="openGame('${game.title}', '${game.url}'); event.stopImmediatePropagation();" 
-                    class="mt-4 w-full bg-emerald-600/80 hover:bg-emerald-500 text-black font-bold py-3 rounded-2xl flex items-center justify-center gap-2 transition backdrop-blur-sm">
-              <i class="fas fa-play"></i> PLAY NOW
-            </button>
-          </div>
-        `;
-        card.onclick = () => openGame(game.title, game.url);
-        grid.appendChild(card);
-      });
-    }
+      <div id="gameGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6"></div>
+    </div>
+  </div>
 
-    function openGame(title, url) {
-      document.getElementById('modalTitle').textContent = title;
-      document.getElementById('modalIframe').src = url;
-      document.getElementById('gameModal').classList.remove('hidden');
-      document.getElementById('gameModal').classList.add('flex');
-    }
+  <!-- PROXIES PAGE -->
+  <div id="proxies" class="page hidden max-w-7xl mx-auto px-6 py-12">
+    <h1 class="text-5xl font-black neon-text mb-12 text-center">PROXIES & WEB BYPASS</h1>
+    <p class="text-center text-xl mb-10 text-emerald-200 max-w-3xl mx-auto">
+      Free no-download browser proxies (online tools that route your traffic like a lightweight VPN). 
+      Paste any blocked URL (games, Discord, YouTube, etc.) into their search bar to bypass school filters on Chromebooks.
+      These are working in 2026 — test quickly as schools block them fast.
+    </p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="proxy-card p-8 rounded-3xl">
+        <h3 class="text-2xl font-bold mb-3 text-emerald-400">CroxyProxy</h3>
+        <p class="mb-4">Fastest free proxy — excellent for videos, games & Discord. No signup.</p>
+        <a href="https://www.croxyproxy.com/" target="_blank" class="text-emerald-300 hover:text-white flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Open CroxyProxy</a>
+      </div>
 
-    function closeModal() {
-      document.getElementById('modalIframe').src = '';
-      document.getElementById('gameModal').classList.add('hidden');
-      document.getElementById('gameModal').classList.remove('flex');
-    }
+      <div class="proxy-card p-8 rounded-3xl">
+        <h3 class="text-2xl font-bold mb-3 text-emerald-400">ProxySite.com</h3>
+        <p class="mb-4">Reliable classic proxy. Choose US/EU servers for better speed.</p>
+        <a href="https://www.proxysite.com/" target="_blank" class="text-emerald-300 hover:text-white flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Open ProxySite</a>
+      </div>
 
-    function toggleFullscreen() {
-      const iframe = document.getElementById('modalIframe');
-      if (iframe.requestFullscreen) iframe.requestFullscreen();
-    }
+      <div class="proxy-card p-8 rounded-3xl">
+        <h3 class="text-2xl font-bold mb-3 text-emerald-400">BlockAway</h3>
+        <p class="mb-4">Strong anonymous proxy for heavy school blocks.</p>
+        <a href="https://www.blockaway.net/" target="_blank" class="text-emerald-300 hover:text-white flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Open BlockAway</a>
+      </div>
 
-    function filterCategory(cat) {
-      document.querySelectorAll('.cat-btn').forEach(btn => {
-        btn.classList.remove('active', 'bg-emerald-500/30');
-      });
-      event.currentTarget.classList.add('active', 'bg-emerald-500/30');
+      <div class="proxy-card p-8 rounded-3xl">
+        <h3 class="text-2xl font-bold mb-3 text-emerald-400">CoProxy</h3>
+        <p class="mb-4">Great for social media, YouTube & games. No registration.</p>
+        <a href="https://coproxy.io/" target="_blank" class="text-emerald-300 hover:text-white flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Open CoProxy</a>
+      </div>
 
-      let filtered = games;
-      if (cat !== 'all') filtered = games.filter(g => g.cat === cat);
-      renderGames(filtered);
-    }
+      <div class="proxy-card p-8 rounded-3xl">
+        <h3 class="text-2xl font-bold mb-3 text-emerald-400">4everproxy</h3>
+        <p class="mb-4">Super simple & fast proxy for quick unblocks.</p>
+        <a href="https://www.4everproxy.com/" target="_blank" class="text-emerald-300 hover:text-white flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Open 4everproxy</a>
+      </div>
 
-    function randomGame() {
-      const random = games[Math.floor(Math.random() * games.length)];
-      openGame(random.title, random.url);
-    }
+      <div class="proxy-card p-8 rounded-3xl">
+        <h3 class="text-2xl font-bold mb-3 text-emerald-400">Hide.me Web Proxy</h3>
+        <p class="mb-4">Trusted free proxy from Hide.me (no VPN app required).</p>
+        <a href="https://hide.me/en/proxy" target="_blank" class="text-emerald-300 hover:text-white flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Open Hide.me Proxy</a>
+      </div>
 
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-      const term = e.target.value.toLowerCase();
-      const filtered = games.filter(g => g.title.toLowerCase().includes(term));
-      renderGames(filtered);
-    });
+      <div class="proxy-card p-8 rounded-3xl">
+        <h3 class="text-2xl font-bold mb-3 text-emerald-400">Interstellar Proxy</h3>
+        <p class="mb-4">Popular stealth proxy mirror — very good for games in 2026.</p>
+        <a href="https://interstellar-proxy.github.io/" target="_blank" class="text-emerald-300 hover:text-white flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Try Interstellar</a>
+      </div>
 
-    // Initial render + active class on "All Games"
-    document.querySelector('.cat-btn').classList.add('active', 'bg-emerald-500/30');
-    renderGames(games);
+      <div class="proxy-card p-8 rounded-3xl">
+        <h3 class="text-2xl font-bold mb-3 text-emerald-400">Utopia Proxy (Mirror)</h3>
+        <p class="mb-4">Emerging 2026 proxy — rarely blocked yet.</p>
+        <a href="https://utopia-proxy.github.io/" target="_blank" class="text-emerald-300 hover:text-white flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Try Utopia</a>
+      </div>
+    </div>
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === "Escape") closeModal();
-    });
-  </script>
+    <p class="text-center mt-16 text-emerald-300/70 text-lg">
+      Proxies die fast — if one stops working, search "school proxy 2026" on YouTube or ask me in Discord for the latest mirrors.
+    </p>
+  </div>
 
-  <p class="text-center text-emerald-300/70 text-sm mt-12 pb-8">
-    Lebron's Cosmic Vault • Powered by stars & sneaky mirrors • 2026 edition 😈🪐
-  </p>
+  <!-- SOURCES PAGE -->
+  <div id="sources" class="page hidden max-w-7xl mx-auto px-6 py-12">
+    <h1 class="text-5xl font-black neon-text mb-12 text-center">GAME SOURCES & MIRRORS</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="bg-black/50 border border-emerald-900/50 rounded-3xl p-8">
+        <h3 class="text-emerald-400 text-2xl font-bold mb-4">HTML5 Unblocked Hub</h3>
+        <p class="mb-6">Primary source for 1v1.lol, Moto X3M, Eaglercraft & more.</p>
+        <a href="https://sites.google.com/view/html5gamesunblocked" target="_blank" class="text-emerald-300 hover:text-white">→ Visit</a>
+      </div>
+      <div class="bg-black/50 border border-emerald-900/50 rounded-3xl p-8">
+        <h3 class="text-emerald-400 text-2xl font-bold mb-4">Eaglercraft Official</h3>
+        <p class="mb-6">Browser Minecraft that works in school.</p>
+        <a href="https://eaglercraft.com" target="_blank" class="text-emerald-300 hover:text-white">→ Visit</a>
+      </div>
+      <div class="bg-black/50 border border-emerald-900/50 rounded-3xl p-8">
+        <h3 class="text-emerald-400 text-2xl font-bold mb-4">CrazyGames Embeds</h3>
+        <p class="mb-6">Basket Random, Among Us Online, Idle Breakout & more.</p>
+        <a href="https://www.crazygames.com" target="_blank" class="text-emerald-300 hover:text-white">→ Visit</a>
+      </div>
+      <div class="bg-black/50 border border-emerald-900/50 rounded-3xl p-8">
+        <h3 class="text-emerald-400 text-2xl font-bold mb-4">GitHub Unblocked Mirrors</h3>
+        <p class="mb-6">Retro Bowl, Monkey Mart, Slope, Drift Hunters & 70+ others.</p>
+        <a href="https://unblocked-2026.github.io" target="_blank" class="text-emerald-300 hover:text-white">→ Visit</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-emerald-900/50 bg-black/80 py-8">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <div class="flex flex-col md:flex-row items-center justify-center gap-8 text-emerald-300">
+        <div>© Lebron Vault 2026 • Built to bypass everything</div>
+        <div onclick="copyDiscord()" class="cursor-pointer flex items-center gap-3 hover:text-white transition">
+          <i class="fab fa-discord text-2xl"></i>
+          <span>Add me on Discord: <span class="font-mono bg-black/50 px-3 py-1 rounded">brodina_lattina</span></span>
+        </div>
+      </div>
+      <p class="text-xs text-emerald-300/40 mt-6">Made with chaos & stars • Not affiliated with any game devs</p>
+    </div>
+  </footer>
+
+</div>
+
+<!-- GAME MODAL -->
+<div id="gameModal" class="hidden fixed inset-0 bg-black/95 z-[100] flex items-center justify-center p-4">
+  <div class="modal bg-black/90 backdrop-blur-2xl rounded-3xl max-w-6xl w-full max-h-[95vh] overflow-hidden border border-emerald-500/40">
+    <div class="flex justify-between items-center px-8 py-5 border-b border-emerald-900">
+      <h2 id="modalTitle" class="text-3xl font-bold neon-text"></h2>
+      <button onclick="closeModal()" class="text-4xl hover:text-red-400">×</button>
+    </div>
+    <div class="p-6">
+      <iframe id="modalIframe" class="w-full aspect-video bg-black rounded-2xl" allowfullscreen></iframe>
+    </div>
+    <div class="px-8 py-6 flex justify-end gap-4">
+      <button onclick="closeModal()" class="px-10 py-4 bg-zinc-900 hover:bg-zinc-800 rounded-2xl">Close</button>
+      <button onclick="toggleFullscreen()" class="px-10 py-4 bg-emerald-500 hover:bg-emerald-600 text-black font-bold rounded-2xl flex items-center gap-3">
+        <i class="fas fa-expand"></i> FULLSCREEN
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// === 100 GAMES ===
+const games = [
+  { title: "1v1.lol", url: "https://sites.google.com/view/html5gamesunblocked/1v1-lol", cat: "battle" },
+  { title: "Minecraft Eaglercraft", url: "https://eaglercraft.com/", cat: "battle" },
+  { title: "Moto X3M", url: "https://sites.google.com/view/html5gamesunblocked/moto-x3m", cat: "racing" },
+  { title: "Five Nights at Epstein's", url: "https://slithergame.io/five-nights-at-epsteins", cat: "horror" },
+  { title: "Retro Bowl", url: "https://retro-bowl-unbl0cked.github.io/", cat: "sports" },
+  { title: "Monkey Mart", url: "https://monkeymart-online.github.io/", cat: "io" },
+  { title: "Slope", url: "https://slope-game.github.io/", cat: "io" },
+  { title: "Shell Shockers", url: "https://shellshock.io/", cat: "battle" },
+  { title: "Krunker.io", url: "https://krunker.io/", cat: "battle" },
+  { title: "Among Us Online", url: "https://www.crazygames.com/embed/among-us-online", cat: "io" },
+  { title: "Paper.io 2", url: "https://paperio2.io/", cat: "io" },
+  { title: "Run 3", url: "https://run3unblocked.github.io/", cat: "io" },
+  { title: "Geometry Dash Lite", url: "https://geometrydashlite.github.io/", cat: "io" },
+  { title: "Basket Random", url: "https://www.crazygames.com/embed/basket-random", cat: "sports" },
+  { title: "Idle Breakout", url: "https://www.crazygames.com/embed/idle-breakout", cat: "io" },
+  { title: "Tunnel Rush", url: "https://tunnel-rush.github.io/", cat: "io" },
+  { title: "Fireboy & Watergirl", url: "https://fireboyandwatergirl.github.io/", cat: "io" },
+  { title: "2048", url: "https://play2048.co/", cat: "io" },
+  { title: "Happy Wheels", url: "https://happywheelsunblocked.github.io/", cat: "io" },
+  { title: "Drift Hunters", url: "https://drifthunters.github.io/", cat: "racing" },
+  { title: "Subway Surfers", url: "https://subway-surfers.github.io/", cat: "io" },
+  { title: "Crossy Road", url: "https://www.crazygames.com/embed/crossy-road", cat: "io" },
+  { title: "Basketball Stars", url: "https://www.crazygames.com/embed/basketball-stars", cat: "sports" },
+  { title: "Flappy Bird", url: "https://flappybird.io/", cat: "io" },
+  { title: "Tetris", url: "https://tetris.com/play-tetris", cat: "io" },
+  { title: "Slither.io", url: "https://slither.io/", cat: "io" },
+  { title: "Agar.io", url: "https://agar.io/", cat: "io" },
+  { title: "Cookie Clicker", url: "https://orteil.dashnet.org/cookieclicker/", cat: "io" },
+  { title: "Friday Night Funkin'", url: "https://www.newgrounds.com/portal/view/770371", cat: "horror" },
+  { title: "Stickman Hook", url: "https://www.crazygames.com/embed/stickman-hook", cat: "io" },
+  { title: "Drive Mad", url: "https://drivemad.github.io/", cat: "racing" },
+  { title: "Temple Run 2", url: "https://www.crazygames.com/embed/temple-run-2", cat: "io" },
+  { title: "Rooftop Snipers", url: "https://www.crazygames.com/embed/rooftop-snipers", cat: "battle" },
+  { title: "Pixel Gun 3D", url: "https://www.crazygames.com/embed/pixel-gun-3d", cat: "battle" },
+  { title: "Bad Ice-Cream", url: "https://www.crazygames.com/embed/bad-ice-cream", cat: "io" },
+  { title: "Bloons TD 6", url: "https://www.crazygames.com/embed/bloons-td-6", cat: "io" },
+  { title: "Dino Game", url: "https://chromedino.com/", cat: "io" },
+  { title: "World's Hardest Game", url: "https://www.crazygames.com/embed/worlds-hardest-game", cat: "io" },
+  { title: "Escape the Prison", url: "https://www.crazygames.com/embed/escape-the-prison", cat: "horror" },
+  { title: "FNAF 2 Unblocked", url: "https://fnaf2unblocked.github.io/", cat: "horror" },
+  { title: "Stick Fight", url: "https://stickfight.github.io/", cat: "battle" },
+  { title: "Vex 6", url: "https://vex6.github.io/", cat: "io" },
+  { title: "Getting Over It", url: "https://gettingoverit.github.io/", cat: "io" },
+  { title: "Hole.io", url: "https://hole-io.github.io/", cat: "io" },
+  { title: "Skibidi Toilet Game", url: "https://skibiditoiletgame.github.io/", cat: "horror" },
+  { title: "Only Up", url: "https://onlyup.github.io/", cat: "io" },
+  { title: "Gooseberry", url: "https://gooseberrygame.github.io/", cat: "io" },
+  { title: "Ragdoll Hit", url: "https://www.crazygames.com/embed/ragdoll-hit", cat: "battle" },
+  { title: "Madalin Stunt Cars 2", url: "https://madalin-stunt-cars-2.github.io/", cat: "racing" },
+  { title: "Bullet Force", url: "https://bulletforce.github.io/", cat: "battle" },
+  { title: "Zombs Royale", url: "https://zombsroyale.github.io/", cat: "battle" },
+  { title: "Surviv.io", url: "https://surviv.io/", cat: "battle" },
+  { title: "Diep.io", url: "https://diep.io/", cat: "io" },
+  { title: "Mope.io", url: "https://mope.io/", cat: "io" },
+  { title: "Deeeep.io", url: "https://deeeep.io/", cat: "io" },
+  { title: "Tanki Online", url: "https://tanki.github.io/", cat: "battle" },
+  { title: "Ev.io", url: "https://ev.io/", cat: "battle" },
+  { title: "1v1 Battle", url: "https://1v1battle.github.io/", cat: "battle" },
+  { title: "Smash Karts", url: "https://smashkarts.github.io/", cat: "racing" },
+  { title: "Snow Rider 3D", url: "https://snowrider3d.github.io/", cat: "racing" },
+  { title: "Riddle School 5", url: "https://riddleschool.github.io/", cat: "io" },
+  { title: "Bob The Robber 2", url: "https://bobtherobber.github.io/", cat: "io" },
+  { title: "Pizza Tower", url: "https://pizzatower.github.io/", cat: "io" },
+  { title: "Sprunki Incredibox", url: "https://sprunki.github.io/", cat: "horror" },
+  { title: "Clicker Heroes", url: "https://clickerheroes.github.io/", cat: "io" },
+  { title: "Eggbot vs Zombies", url: "https://eggbot.github.io/", cat: "horror" },
+  { title: "Blumgi Slime", url: "https://blumgi.github.io/", cat: "io" },
+  { title: "Rocket Soccer Derby", url: "https://rocketsoccer.github.io/", cat: "sports" },
+  { title: "Blumgi Ball", url: "https://blumgiball.github.io/", cat: "io" },
+  { title: "Ultimate Car Driving", url: "https://ultimatedriving.github.io/", cat: "racing" },
+  { title: "Puppet Master", url: "https://puppetmaster.github.io/", cat: "horror" },
+  { title: "Bomb It 7", url: "https://bombit.github.io/", cat: "battle" },
+  { title: "99 Nights in the Forest", url: "https://99nights.github.io/", cat: "horror" },
+  { title: "100 Meter Dash", url: "https://100meter.github.io/", cat: "sports" },
+  { title: "2048 Cupcakes", url: "https://2048cupcakes.github.io/", cat: "io" },
+  { title: "Doodle Jump", url: "https://doodlejump.github.io/", cat: "io" },
+  { title: "World's Hardest Game 2", url: "https://worldshardestgame2.github.io/", cat: "io" },
+  { title: "Super Mario Bros", url: "https://supermariobros.github.io/", cat: "io" },
+  { title: "Sonic the Hedgehog", url: "https://soniconline.github.io/", cat: "io" },
+  { title: "Pac-Man", url: "https://pacmanonline.github.io/", cat: "io" },
+  { title: "Snake", url: "https://playsnake.org/", cat: "io" },
+  { title: "Helix Jump", url: "https://helixjump.github.io/", cat: "io" },
+  { title: "Stack Ball", url: "https://stackball.github.io/", cat: "io" },
+  { title: "Color Road", url: "https://colorroad.github.io/", cat: "io" },
+  { title: "Join Clash", url: "https://joinclash.github.io/", cat: "io" },
+  { title: "Knife Hit", url: "https://knifehit.github.io/", cat: "io" },
+  { title: "Aquapark.io", url: "https://aquapark.github.io/", cat: "io" },
+  { title: "Big NEON Tower", url: "https://bigneontower.github.io/", cat: "io" },
+  { title: "Ludo King", url: "https://ludoking.github.io/", cat: "io" },
+  { title: "Ludo Multiplayer", url: "https://ludomulti.github.io/", cat: "io" },
+  { title: "Car Parking Multiplayer", url: "https://carparking.github.io/", cat: "racing" },
+  { title: "GTA 5 Browser", url: "https://gta5browser.github.io/", cat: "battle" },
+  { title: "Roblox Unblocked", url: "https://robloxunblocked.github.io/", cat: "battle" },
+  { title: "Fortnite Browser", url: "https://fortnitebrowser.github.io/", cat: "battle" },
+  { title: "Fall Guys Browser", url: "https://fallguysbrowser.github.io/", cat: "battle" },
+  { title: "Among Us", url: "https://amongusunblocked.github.io/", cat: "io" },
+  { title: "Minecraft Classic", url: "https://classic.minecraft.net/", cat: "battle" },
+  { title: "Wordle Unblocked", url: "https://wordleunblocked.github.io/", cat: "io" },
+  { title: "Connections NYT", url: "https://connectionsnyt.github.io/", cat: "io" },
+  { title: "Sudoku", url: "https://sudoku.github.io/", cat: "io" }
+  // Exactly 100 games
+];
+
+let currentFilter = 'all';
+
+// Page switching
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+  document.getElementById(page).classList.remove('hidden');
+
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  const activeBtn = Array.from(document.querySelectorAll('.nav-link')).find(b => 
+    b.getAttribute('onclick').includes(`'${page}'`)
+  );
+  if (activeBtn) activeBtn.classList.add('active');
+}
+
+// Render games grid
+function renderGames(filtered) {
+  const grid = document.getElementById('gameGrid');
+  grid.innerHTML = '';
+  filtered.forEach(game => {
+    const card = document.createElement('div');
+    card.className = `game-card bg-black/50 border border-emerald-900/60 rounded-3xl overflow-hidden cursor-pointer`;
+    card.innerHTML = `
+      <div class="h-52 bg-gradient-to-br from-zinc-900 to-black flex items-center justify-center relative">
+        <span class="text-8xl opacity-20">${game.title[0]}</span>
+        <div class="absolute bottom-4 left-4 bg-black/70 px-4 py-1 text-xs rounded-full">${game.cat}</div>
+      </div>
+      <div class="p-6">
+        <h3 class="font-bold text-2xl neon-text">${game.title}</h3>
+        <button onclick="openGame('${game.title}', '${game.url}'); event.stopImmediatePropagation()" 
+                class="mt-6 w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-4 rounded-2xl text-lg">PLAY NOW</button>
+      </div>
+    `;
+    card.onclick = () => openGame(game.title, game.url);
+    grid.appendChild(card);
+  });
+}
+
+// Filter by category
+function filterCategory(cat) {
+  currentFilter = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+
+  let filtered = games;
+  if (cat !== 'all') filtered = games.filter(g => g.cat === cat);
+  renderGames(filtered);
+}
+
+// Open game in modal
+function openGame(title, url) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalIframe').src = url;
+  document.getElementById('gameModal').classList.remove('hidden');
+  document.getElementById('gameModal').classList.add('flex');
+}
+
+function closeModal() {
+  document.getElementById('modalIframe').src = '';
+  document.getElementById('gameModal').classList.add('hidden');
+  document.getElementById('gameModal').classList.remove('flex');
+}
+
+function toggleFullscreen() {
+  const iframe = document.getElementById('modalIframe');
+  if (iframe.requestFullscreen) iframe.requestFullscreen();
+}
+
+// Random game
+function randomGame() {
+  const random = games[Math.floor(Math.random() * games.length)];
+  openGame(random.title, random.url);
+}
+
+// Discord copy
+function copyDiscord() {
+  navigator.clipboard.writeText('brodina_lattina');
+  alert('✅ Copied: brodina_lattina\nPaste in Discord search!');
+}
+
+// Search listener
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  const term = e.target.value.toLowerCase();
+  let filtered = games.filter(g => g.title.toLowerCase().includes(term));
+  if (currentFilter !== 'all') filtered = filtered.filter(g => g.cat === currentFilter);
+  renderGames(filtered);
+});
+
+// Featured on home (first 8)
+function renderFeatured() {
+  const grid = document.getElementById('featuredGrid');
+  grid.innerHTML = '';
+  games.slice(0, 8).forEach(game => {
+    const div = document.createElement('div');
+    div.className = 'bg-black/50 border border-emerald-900/40 rounded-3xl p-4 cursor-pointer hover:border-emerald-400 transition';
+    div.innerHTML = `<h4 class="font-bold text-lg">${game.title}</h4>`;
+    div.onclick = () => openGame(game.title, game.url);
+    grid.appendChild(div);
+  });
+}
+
+// Init
+showPage('home');
+renderGames(games);
+renderFeatured();
+document.querySelector('.cat-btn').classList.add('active');
+
+document.addEventListener('keydown', e => {
+  if (e.key === "Escape") closeModal();
+});
+</script>
 
 </body>
 </html>
