@@ -34,22 +34,20 @@
     .nav-link.active { color: #22ff88; border-bottom: 3px solid #22ff88; }
     .modal { animation: modalPop 0.4s ease; }
     @keyframes modalPop { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-    .proxy-card { 
-      background: rgba(0,0,0,0.5); 
-      border: 1px solid #22ff88/30; 
-      transition: all 0.3s; 
+    .proxy-card {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid #22ff88/30;
+      transition: all 0.3s;
     }
-    .proxy-card:hover { 
-      border-color: #22ff88; 
-      transform: translateY(-5px); 
-      box-shadow: 0 0 25px rgba(34,255,136,0.4); 
+    .proxy-card:hover {
+      border-color: #22ff88;
+      transform: translateY(-5px);
+      box-shadow: 0 0 25px rgba(34,255,136,0.4);
     }
   </style>
 </head>
 <body>
-
 <div class="content-bg min-h-screen">
-
   <!-- NAVBAR -->
   <nav class="border-b border-emerald-900/50 bg-black/70 backdrop-blur-xl sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
@@ -57,43 +55,61 @@
         <div class="w-11 h-11 bg-gradient-to-br from-emerald-400 to-cyan-400 rounded-2xl flex items-center justify-center text-3xl font-black shadow-xl">L</div>
         <h1 class="text-4xl font-black tracking-tighter neon-text">LEBRON VAULT</h1>
       </div>
-
       <div class="flex gap-8 text-lg font-medium">
         <button onclick="showPage('home')" class="nav-link active px-5 py-2">HOME</button>
         <button onclick="showPage('games')" class="nav-link px-5 py-2">GAMES</button>
         <button onclick="showPage('proxies')" class="nav-link px-5 py-2">PROXIES</button>
         <button onclick="showPage('sources')" class="nav-link px-5 py-2">SOURCES</button>
       </div>
-
       <button onclick="randomGame()" class="flex items-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-black font-bold px-6 py-3 rounded-2xl transition">
         <i class="fas fa-dice-five"></i> RANDOM GAME
       </button>
     </div>
   </nav>
-
   <!-- HOME PAGE -->
   <div id="home" class="page">
     <div class="max-w-7xl mx-auto px-6 py-20 text-center">
       <div class="inline-block px-8 py-3 bg-black/60 rounded-full text-emerald-300 text-sm tracking-widest mb-6">2026 • 100 GAMES • PROXIES • STEALTH MODE</div>
       <h1 class="text-7xl font-black tracking-tighter neon-text mb-6">WELCOME TO THE VAULT</h1>
       <p class="text-2xl text-emerald-200 max-w-2xl mx-auto">Cosmic unblocked games + free browser proxies. Built for school networks. No downloads needed.</p>
+
+      <!-- Added: DuckDuckGo Private Search (stealth browser mode) -->
+      <div class="mt-12 max-w-4xl mx-auto">
+        <form action="https://duckduckgo.com/" method="get" target="_blank" class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <input 
+            type="text" 
+            name="q" 
+            placeholder="DuckDuckGo Private Search – No Tracking, School-Safe Browser..." 
+            class="flex-1 bg-black/70 border-2 border-emerald-600/70 rounded-3xl py-6 px-10 text-2xl text-white focus:outline-none focus:border-emerald-400 placeholder-emerald-400 shadow-lg"
+            autocomplete="off"
+          />
+          <button 
+            type="submit" 
+            class="bg-gradient-to-r from-emerald-500 to-cyan-400 text-black font-black text-2xl px-10 py-6 rounded-3xl hover:scale-105 transition shadow-xl flex items-center gap-3"
+          >
+            <i class="fas fa-search"></i> SEARCH PRIVATELY
+          </button>
+        </form>
+        <p class="text-center text-lg text-emerald-300 mt-4">
+          Private search that often works directly at school. Use your proxies if it gets blocked. Perfect for finding more games or mirrors.
+        </p>
+      </div>
+
       <div class="flex justify-center gap-6 mt-12">
         <button onclick="showPage('games')" class="px-12 py-6 bg-gradient-to-r from-emerald-500 to-cyan-400 text-black font-black text-2xl rounded-3xl hover:scale-110 transition">ENTER GAMES</button>
         <button onclick="showPage('proxies')" class="px-12 py-6 bg-gradient-to-r from-purple-600 to-indigo-500 text-white font-black text-2xl rounded-3xl hover:scale-110 transition">BYPASS TOOLS</button>
       </div>
     </div>
-
     <div class="max-w-7xl mx-auto px-6 pb-20">
       <h2 class="text-3xl font-bold mb-8 text-center">Featured Games</h2>
       <div id="featuredGrid" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
     </div>
   </div>
-
   <!-- GAMES PAGE - 100 games -->
   <div id="games" class="page hidden">
     <div class="max-w-7xl mx-auto px-6 py-8">
       <div class="flex flex-col md:flex-row gap-6 mb-10">
-        <input id="searchInput" type="text" placeholder="Search 100 games..." 
+        <input id="searchInput" type="text" placeholder="Search 100 games..."
                class="flex-1 bg-black/60 border border-emerald-700 rounded-3xl py-5 px-8 text-xl focus:outline-none focus:border-emerald-400"/>
         <div class="flex gap-3 overflow-x-auto pb-2">
           <button onclick="filterCategory('all')" class="cat-btn active whitespace-nowrap px-8 py-4 bg-black/60 rounded-3xl">ALL</button>
@@ -104,75 +120,64 @@
           <button onclick="filterCategory('sports')" class="cat-btn whitespace-nowrap px-8 py-4 bg-black/60 rounded-3xl">SPORTS</button>
         </div>
       </div>
-
       <div id="gameGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6"></div>
     </div>
   </div>
-
   <!-- PROXIES PAGE -->
   <div id="proxies" class="page hidden max-w-7xl mx-auto px-6 py-12">
     <h1 class="text-5xl font-black neon-text mb-12 text-center">PROXIES & WEB BYPASS</h1>
     <p class="text-center text-xl mb-10 text-emerald-200 max-w-3xl mx-auto">
-      Free no-download browser proxies (online tools that route your traffic like a lightweight VPN). 
+      Free no-download browser proxies (online tools that route your traffic like a lightweight VPN).
       Paste any blocked URL (games, Discord, YouTube, etc.) into their search bar to bypass school filters on Chromebooks.
       These are working in 2026 — test quickly as schools block them fast.
     </p>
-    
+   
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <div class="proxy-card p-8 rounded-3xl">
         <h3 class="text-2xl font-bold mb-3 text-emerald-400">CroxyProxy</h3>
         <p class="mb-4">Fastest free proxy — excellent for videos, games & Discord. No signup.</p>
         <a href="https://www.croxyproxy.com/" target="_blank" class="text-emerald-300 hover:text-white flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Open CroxyProxy</a>
       </div>
-
       <div class="proxy-card p-8 rounded-3xl">
         <h3 class="text-2xl font-bold mb-3 text-emerald-400">ProxySite.com</h3>
         <p class="mb-4">Reliable classic proxy. Choose US/EU servers for better speed.</p>
         <a href="https://www.proxysite.com/" target="_blank" class="text-emerald-300 hover:text-white flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Open ProxySite</a>
       </div>
-
       <div class="proxy-card p-8 rounded-3xl">
         <h3 class="text-2xl font-bold mb-3 text-emerald-400">BlockAway</h3>
         <p class="mb-4">Strong anonymous proxy for heavy school blocks.</p>
         <a href="https://www.blockaway.net/" target="_blank" class="text-emerald-300 hover:text-white flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Open BlockAway</a>
       </div>
-
       <div class="proxy-card p-8 rounded-3xl">
         <h3 class="text-2xl font-bold mb-3 text-emerald-400">CoProxy</h3>
         <p class="mb-4">Great for social media, YouTube & games. No registration.</p>
         <a href="https://coproxy.io/" target="_blank" class="text-emerald-300 hover:text-white flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Open CoProxy</a>
       </div>
-
       <div class="proxy-card p-8 rounded-3xl">
         <h3 class="text-2xl font-bold mb-3 text-emerald-400">4everproxy</h3>
         <p class="mb-4">Super simple & fast proxy for quick unblocks.</p>
         <a href="https://www.4everproxy.com/" target="_blank" class="text-emerald-300 hover:text-white flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Open 4everproxy</a>
       </div>
-
       <div class="proxy-card p-8 rounded-3xl">
         <h3 class="text-2xl font-bold mb-3 text-emerald-400">Hide.me Web Proxy</h3>
         <p class="mb-4">Trusted free proxy from Hide.me (no VPN app required).</p>
         <a href="https://hide.me/en/proxy" target="_blank" class="text-emerald-300 hover:text-white flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Open Hide.me Proxy</a>
       </div>
-
       <div class="proxy-card p-8 rounded-3xl">
         <h3 class="text-2xl font-bold mb-3 text-emerald-400">Interstellar Proxy</h3>
         <p class="mb-4">Popular stealth proxy mirror — very good for games in 2026.</p>
         <a href="https://interstellar-proxy.github.io/" target="_blank" class="text-emerald-300 hover:text-white flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Try Interstellar</a>
       </div>
-
       <div class="proxy-card p-8 rounded-3xl">
         <h3 class="text-2xl font-bold mb-3 text-emerald-400">Utopia Proxy (Mirror)</h3>
         <p class="mb-4">Emerging 2026 proxy — rarely blocked yet.</p>
         <a href="https://utopia-proxy.github.io/" target="_blank" class="text-emerald-300 hover:text-white flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Try Utopia</a>
       </div>
     </div>
-
     <p class="text-center mt-16 text-emerald-300/70 text-lg">
       Proxies die fast — if one stops working, search "school proxy 2026" on YouTube or ask me in Discord for the latest mirrors.
     </p>
   </div>
-
   <!-- SOURCES PAGE -->
   <div id="sources" class="page hidden max-w-7xl mx-auto px-6 py-12">
     <h1 class="text-5xl font-black neon-text mb-12 text-center">GAME SOURCES & MIRRORS</h1>
@@ -199,7 +204,6 @@
       </div>
     </div>
   </div>
-
   <!-- FOOTER -->
   <footer class="border-t border-emerald-900/50 bg-black/80 py-8">
     <div class="max-w-7xl mx-auto px-6 text-center">
@@ -213,9 +217,7 @@
       <p class="text-xs text-emerald-300/40 mt-6">Made with chaos & stars • Not affiliated with any game devs</p>
     </div>
   </footer>
-
 </div>
-
 <!-- GAME MODAL -->
 <div id="gameModal" class="hidden fixed inset-0 bg-black/95 z-[100] flex items-center justify-center p-4">
   <div class="modal bg-black/90 backdrop-blur-2xl rounded-3xl max-w-6xl w-full max-h-[95vh] overflow-hidden border border-emerald-500/40">
@@ -234,7 +236,6 @@
     </div>
   </div>
 </div>
-
 <script>
 // === 100 GAMES ===
 const games = [
@@ -340,21 +341,17 @@ const games = [
   { title: "Sudoku", url: "https://sudoku.github.io/", cat: "io" }
   // Exactly 100 games
 ];
-
 let currentFilter = 'all';
-
 // Page switching
 function showPage(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
   document.getElementById(page).classList.remove('hidden');
-
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-  const activeBtn = Array.from(document.querySelectorAll('.nav-link')).find(b => 
+  const activeBtn = Array.from(document.querySelectorAll('.nav-link')).find(b =>
     b.getAttribute('onclick').includes(`'${page}'`)
   );
   if (activeBtn) activeBtn.classList.add('active');
 }
-
 // Render games grid
 function renderGames(filtered) {
   const grid = document.getElementById('gameGrid');
@@ -369,7 +366,7 @@ function renderGames(filtered) {
       </div>
       <div class="p-6">
         <h3 class="font-bold text-2xl neon-text">${game.title}</h3>
-        <button onclick="openGame('${game.title}', '${game.url}'); event.stopImmediatePropagation()" 
+        <button onclick="openGame('${game.title}', '${game.url}'); event.stopImmediatePropagation()"
                 class="mt-6 w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-4 rounded-2xl text-lg">PLAY NOW</button>
       </div>
     `;
@@ -377,18 +374,15 @@ function renderGames(filtered) {
     grid.appendChild(card);
   });
 }
-
 // Filter by category
 function filterCategory(cat) {
   currentFilter = cat;
   document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
   event.currentTarget.classList.add('active');
-
   let filtered = games;
   if (cat !== 'all') filtered = games.filter(g => g.cat === cat);
   renderGames(filtered);
 }
-
 // Open game in modal
 function openGame(title, url) {
   document.getElementById('modalTitle').textContent = title;
@@ -396,30 +390,25 @@ function openGame(title, url) {
   document.getElementById('gameModal').classList.remove('hidden');
   document.getElementById('gameModal').classList.add('flex');
 }
-
 function closeModal() {
   document.getElementById('modalIframe').src = '';
   document.getElementById('gameModal').classList.add('hidden');
   document.getElementById('gameModal').classList.remove('flex');
 }
-
 function toggleFullscreen() {
   const iframe = document.getElementById('modalIframe');
   if (iframe.requestFullscreen) iframe.requestFullscreen();
 }
-
 // Random game
 function randomGame() {
   const random = games[Math.floor(Math.random() * games.length)];
   openGame(random.title, random.url);
 }
-
 // Discord copy
 function copyDiscord() {
   navigator.clipboard.writeText('brodina_lattina');
   alert('✅ Copied: brodina_lattina\nPaste in Discord search!');
 }
-
 // Search listener
 document.getElementById('searchInput').addEventListener('input', (e) => {
   const term = e.target.value.toLowerCase();
@@ -427,7 +416,6 @@ document.getElementById('searchInput').addEventListener('input', (e) => {
   if (currentFilter !== 'all') filtered = filtered.filter(g => g.cat === currentFilter);
   renderGames(filtered);
 });
-
 // Featured on home (first 8)
 function renderFeatured() {
   const grid = document.getElementById('featuredGrid');
@@ -440,17 +428,14 @@ function renderFeatured() {
     grid.appendChild(div);
   });
 }
-
 // Init
 showPage('home');
 renderGames(games);
 renderFeatured();
 document.querySelector('.cat-btn').classList.add('active');
-
 document.addEventListener('keydown', e => {
   if (e.key === "Escape") closeModal();
 });
 </script>
-
 </body>
 </html>
